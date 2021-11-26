@@ -1,0 +1,27 @@
+{
+  "name": "learn-wepabk",
+  "version": "1.0.0",
+  "description": "学习 webpack 各种功能",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config ./config/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/worker-ben/learn-wepabk.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/worker-ben/learn-wepabk/issues"
+  },
+  "homepage": "https://github.com/worker-ben/learn-wepabk#readme",
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "babel-loader": "^8.2.3",
+    "webpack": "^4.46.0",
+    "webpack-cli": "^4.9.1"
+  }
+}
