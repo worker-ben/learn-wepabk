@@ -28,6 +28,10 @@ module.exports = {
         loader: "style-loader",
         options: { injectType: "styleTag" } 
       }, "css-loader","less-loader"]
+    },
+    {
+      test: /\.(png|svg|jpg|gif)$/,
+      use: ['file-loader']
     }
     ]
   },
