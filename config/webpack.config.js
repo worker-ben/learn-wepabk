@@ -1,6 +1,9 @@
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
 
 module.exports = {
   entry: path.resolve(__dirname, '../src/demo2/index.js'),
@@ -36,11 +39,18 @@ module.exports = {
     }
     ]
   },
-  plugins:[
+  plugins: [
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      hash: true, 
+      minify: true, // production 默认开启
+      template: path.resolve(__dirname, '../template/index.html'),
+    }),
     new MiniCssExtractPlugin({
       filename: "[name]_[contenthash:8].css"
     }),
     new OptimizeCSSAssetsPlugin(),
+    new CleanWebpackPlugin(),
   ],
   cache: false,
   // watch: true,
