@@ -4,14 +4,25 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
+// 三方库
+const vendor = [
+  'react',
+  'react-dom'
+];
+
+// 自己写的 component
+const component = ['src/demo3/component/'];
 
 module.exports = {
-  entry: path.resolve(__dirname, '../src/demo2/index.js'),
-  output: {
-    path: path.resolve(__dirname, '../src/demo2/dist'),
-    filename: 'bundle_[chunkhash:8].js',
+  entry: {
+    manager: path.resolve(__dirname, '../src/demo3/manager/index.js'),
+    student: path.resolve(__dirname, '../src/demo3/student/index.js'),
   },
-  mode: 'production',
+  output: {
+    path: path.resolve(__dirname, '../src/demo3/dist'),
+    filename: '[name]_bundle_[chunkhash:8].js',
+  },
+  mode: 'development',
   module: {
     rules: [{
       test: /\.js$/,
@@ -39,11 +50,63 @@ module.exports = {
     }
     ]
   },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        // 分离基础包
+        react: {
+          test: /(react|react-dom)/,
+          name: 'react',
+          chunks: 'all', // 同步引入的包
+        },
+        component: {
+          test(module) {
+            if (module.resource) {
+              const result = module.resource.indexOf('/demo3/component/') > -1;
+              console.log('in component', module.resource, result);
+              return result;
+            } else {
+              return false;
+            }
+          },
+          name: 'component',
+          chunks: 'all', // 同步引入的包
+        },
+        // 分离公共代码
+        common: {
+          test(module) {
+            const exclude = [...vendor, ...component];
+            if (module.resource) {
+              console.log('in common', module.resource);
+              return (
+                // 在 node_modules 里面且不在 exclude 里面
+                module.resource.indexOf('node_modules') > -1 &&
+                exclude.every(vendor => module.resource.indexOf(vendor) === -1)
+              );
+            } else {
+              return false;
+            }
+          },
+          name: 'common',
+          chunks: 'all', // 同步引入的包
+          minChunks: 2, // 最小引用次数
+        }
+      }
+    }
+  },
   plugins: [
     new HtmlWebpackPlugin({
-      filename: 'index.html',
-      hash: true, 
-      minify: true, // production 默认开启
+      filename: 'student.html',
+      hash: true,
+      chunks: ['student'],
+      minify: false, // production 默认开启
+      template: path.resolve(__dirname, '../template/index.html'),
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'manager.html',
+      hash: true,
+      chunks: ['manager'],
+      minify: false, // production 默认开启
       template: path.resolve(__dirname, '../template/index.html'),
     }),
     new MiniCssExtractPlugin({
