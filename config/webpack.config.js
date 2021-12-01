@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // 三方库
 const vendor = [
@@ -22,7 +23,7 @@ module.exports = {
     path: path.resolve(__dirname, '../src/demo3/dist'),
     filename: '[name]_bundle_[chunkhash:8].js',
   },
-  mode: 'development',
+  mode: 'production',
   module: {
     rules: [{
       test: /\.js$/,
@@ -114,6 +115,7 @@ module.exports = {
     }),
     new OptimizeCSSAssetsPlugin(),
     new CleanWebpackPlugin(),
+    // new BundleAnalyzerPlugin(),
   ],
   cache: false,
   // watch: true,
