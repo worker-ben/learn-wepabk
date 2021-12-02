@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, lazy, Suspense } from "react";
 import { Button } from 'antd';
 import ToolTip from '../component/tooltip';
+
+// 懒加载的组件
+const OtherComponent = lazy(() => { return import('../component/button') })
 
 const ManagerHomePage = () => {
   const [array, setArray] = useState([1, 2, 3, 4, 5, 6]);
   const [first, setFirst] = useState(1);
+  const [show, setShow] = useState(false);
 
   // 懒加载库
   const handleLazyLodashReverse = () => {
@@ -31,6 +35,16 @@ const ManagerHomePage = () => {
       <Button type="primary" onClick={handleGetFirst}>Get First Number</Button>
       <div>First is : {first}</div>
       <ToolTip />
+      <Button type="primary" onClick={() => {
+        setShow(true);
+      }}>Show Lazy Component</Button>
+      {show && (
+        <Suspense fallback={<div>loading...</div>}>
+          <div>
+            <OtherComponent />
+          </div>
+        </Suspense>
+      )}
     </>
   )
 }

@@ -24,6 +24,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '../src/demo3/dist'),
     filename: '[name]_bundle_[chunkhash:8].js',
+    crossOriginLoading: 'use-credentials',
   },
   mode: 'production',
   module: {
