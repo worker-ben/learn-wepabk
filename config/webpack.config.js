@@ -7,8 +7,10 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 // 三方库
 const vendor = [
-  'react',
-  'react-dom'
+  'node_modules/react',
+  'node_modules/react-dom',
+  'node_modules/antd',
+  'node_modules/@ant-design',
 ];
 
 // 自己写的 component
@@ -52,19 +54,34 @@ module.exports = {
     ]
   },
   optimization: {
+    // 如果没有 splitChunks 打出来的将会是一份大JS
     splitChunks: {
+      minSize: 1024,
       cacheGroups: {
         // 分离基础包
         react: {
-          test: /(react|react-dom)/,
+          test(module) {
+            if (module.resource) {
+              const result = module.resource.indexOf('/node_modules/react/') > -1 || module.resource.indexOf('/node_modules/react-dom/') > -1;
+              console.log('in react', module.resource, result);
+              return result;
+            } else {
+              return false;
+            }
+          },
           name: 'react',
           chunks: 'all', // 同步引入的包
+          minChunks: 2,
         },
+        // antd: {
+        //   test: /(node_modules\/antd|node_modules\/@ant-design)/,
+        //   name: 'antd',
+        //   chunks: 'all', // 同步引入的包
+        // },
         component: {
           test(module) {
             if (module.resource) {
               const result = module.resource.indexOf('/demo3/component/') > -1;
-              console.log('in component', module.resource, result);
               return result;
             } else {
               return false;
@@ -78,7 +95,6 @@ module.exports = {
           test(module) {
             const exclude = [...vendor, ...component];
             if (module.resource) {
-              console.log('in common', module.resource);
               return (
                 // 在 node_modules 里面且不在 exclude 里面
                 module.resource.indexOf('node_modules') > -1 &&
