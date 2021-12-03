@@ -18,12 +18,12 @@ const vendor = [
 const component = ['src/demo3/component/'];
 
 module.exports = {
-  entry: {
-    manager: path.resolve(__dirname, '../src/demo3/manager/index.js'),
-    student: path.resolve(__dirname, '../src/demo3/student/index.js'),
-  },
+  entry: path.resolve(__dirname, '../src/demo5/index.js'),
+    // manager: path.resolve(__dirname, '../src/demo3/manager/index.js'),
+    // student: path.resolve(__dirname, '../src/demo3/student/index.js'),
+  
   output: {
-    path: path.resolve(__dirname, '../src/demo3/dist'),
+    path: path.resolve(__dirname, '../src/demo5/dist'),
     filename: '[name]_bundle_[chunkhash:8].js',
     crossOriginLoading: 'use-credentials',
   },
@@ -104,19 +104,25 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      filename: 'student.html',
+      filename: 'index.html',
       hash: true,
-      chunks: ['student'],
       minify: false, // production 默认开启
       template: path.resolve(__dirname, '../template/index.html'),
     }),
-    new HtmlWebpackPlugin({
-      filename: 'manager.html',
-      hash: true,
-      chunks: ['manager'],
-      minify: false, // production 默认开启
-      template: path.resolve(__dirname, '../template/index.html'),
-    }),
+    // new HtmlWebpackPlugin({
+    //   filename: 'student.html',
+    //   hash: true,
+    //   chunks: ['student'],
+    //   minify: false, // production 默认开启
+    //   template: path.resolve(__dirname, '../template/index.html'),
+    // }),
+    // new HtmlWebpackPlugin({
+    //   filename: 'manager.html',
+    //   hash: true,
+    //   chunks: ['manager'],
+    //   minify: false, // production 默认开启
+    //   template: path.resolve(__dirname, '../template/index.html'),
+    // }),
     new MiniCssExtractPlugin({
       filename: "[name]_[contenthash:8].css"
     }),

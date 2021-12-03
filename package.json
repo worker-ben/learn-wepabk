@@ -46,6 +46,7 @@
   "dependencies": {
     "ant-design": "^1.0.0",
     "antd": "^4.17.2",
+    "mycomponents_weizhibin": "^1.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "webpack-dev-server": "^4.6.0"
