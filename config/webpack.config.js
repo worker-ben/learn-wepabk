@@ -11,6 +11,7 @@ const vendor = [
   'node_modules/react-dom',
   'node_modules/antd',
   'node_modules/@ant-design',
+  'node_modules/lodash',
 ];
 
 // 自己写的 component
@@ -27,6 +28,10 @@ module.exports = {
     crossOriginLoading: 'use-credentials',
   },
   mode: 'production',
+  externals: {
+    'react': 'React',
+    'react-dom': 'ReactDOM'
+  },
   module: {
     rules: [{
       test: /\.js$/,
@@ -58,17 +63,17 @@ module.exports = {
       minSize: 1024,
       cacheGroups: {
         // 分离基础包
-        react: {
+        lodash: {
           test(module) {
             if (module.resource) {
-              const result = module.resource.indexOf('/node_modules/react/') > -1 || module.resource.indexOf('/node_modules/react-dom/') > -1;
-              console.log('in react', module.resource, result);
+              const result = module.resource.indexOf('/node_modules/lodash/') > -1 || module.resource.indexOf('/node_modules/react-dom/') > -1;
+              console.log('in lodash', module.resource, result);
               return result;
             } else {
               return false;
             }
           },
-          name: 'react',
+          name: 'lodash',
           chunks: 'all', // 同步引入的包
         },
         antd: {
@@ -77,23 +82,23 @@ module.exports = {
           chunks: 'all', // 同步引入的包
         },
         // 分离公共代码
-        // common: {
-        //   test(module) {
-        //     const exclude = [...vendor, ...component];
-        //     if (module.resource) {
-        //       return (
-        //         // 在 node_modules 里面且不在 exclude 里面
-        //         module.resource.indexOf('node_modules') > -1 &&
-        //         exclude.every(vendor => module.resource.indexOf(vendor) === -1)
-        //       );
-        //     } else {
-        //       return false;
-        //     }
-        //   },
-        //   name: 'common',
-        //   chunks: 'all', // 同步引入的包
-        //   minChunks: 2, // 最小引用次数
-        // }
+        common: {
+          test(module) {
+            const exclude = [...vendor, ...component];
+            if (module.resource) {
+              return (
+                // 在 node_modules 里面且不在 exclude 里面
+                module.resource.indexOf('node_modules') > -1 &&
+                exclude.every(vendor => module.resource.indexOf(vendor) === -1)
+              );
+            } else {
+              return false;
+            }
+          },
+          name: 'common',
+          chunks: 'all', // 同步引入的包
+          // minChunks: 2, // 最小引用次数
+        }
       }
     }
   },
@@ -117,7 +122,7 @@ module.exports = {
     }),
     new OptimizeCSSAssetsPlugin(),
     new CleanWebpackPlugin(),
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
   ],
   cache: false,
   // watch: true,
