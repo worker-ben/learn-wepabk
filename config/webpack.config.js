@@ -31,9 +31,7 @@ module.exports = {
     rules: [{
       test: /\.js$/,
       exclude: /node_modules/,
-      use: {
-        loader: "babel-loader",
-      }
+      use: "babel-loader"
     },
     {
       test: /\.css$/,
@@ -72,43 +70,30 @@ module.exports = {
           },
           name: 'react',
           chunks: 'all', // 同步引入的包
-          minChunks: 2,
         },
-        // antd: {
-        //   test: /(node_modules\/antd|node_modules\/@ant-design)/,
-        //   name: 'antd',
-        //   chunks: 'all', // 同步引入的包
-        // },
-        component: {
-          test(module) {
-            if (module.resource) {
-              const result = module.resource.indexOf('/demo3/component/') > -1;
-              return result;
-            } else {
-              return false;
-            }
-          },
-          name: 'component',
+        antd: {
+          test: /(node_modules\/antd|node_modules\/@ant-design)/,
+          name: 'antd',
           chunks: 'all', // 同步引入的包
         },
         // 分离公共代码
-        common: {
-          test(module) {
-            const exclude = [...vendor, ...component];
-            if (module.resource) {
-              return (
-                // 在 node_modules 里面且不在 exclude 里面
-                module.resource.indexOf('node_modules') > -1 &&
-                exclude.every(vendor => module.resource.indexOf(vendor) === -1)
-              );
-            } else {
-              return false;
-            }
-          },
-          name: 'common',
-          chunks: 'all', // 同步引入的包
-          minChunks: 2, // 最小引用次数
-        }
+        // common: {
+        //   test(module) {
+        //     const exclude = [...vendor, ...component];
+        //     if (module.resource) {
+        //       return (
+        //         // 在 node_modules 里面且不在 exclude 里面
+        //         module.resource.indexOf('node_modules') > -1 &&
+        //         exclude.every(vendor => module.resource.indexOf(vendor) === -1)
+        //       );
+        //     } else {
+        //       return false;
+        //     }
+        //   },
+        //   name: 'common',
+        //   chunks: 'all', // 同步引入的包
+        //   minChunks: 2, // 最小引用次数
+        // }
       }
     }
   },
@@ -132,7 +117,7 @@ module.exports = {
     }),
     new OptimizeCSSAssetsPlugin(),
     new CleanWebpackPlugin(),
-    // new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin(),
   ],
   cache: false,
   // watch: true,

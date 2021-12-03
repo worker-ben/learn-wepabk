@@ -7,8 +7,8 @@ import 'antd/dist/antd.css';
 const App = () => {
   return (
     <>
-      <OtherPage />
       <ManagerHomePage />
+      <OtherPage />
     </>
   )
 }
