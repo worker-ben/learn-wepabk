@@ -4,6 +4,8 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const threadLoader = require('thread-loader');
+// 速度分析插件
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // 预热
@@ -66,7 +68,7 @@ module.exports = {
         loader: 'thread-loader',
         options: jsWorkerPool
       },
-        "babel-loader"
+        "babel-loader?cacheDirectory=true"
       ]
     },
     {
@@ -230,6 +232,7 @@ module.exports = {
     }),
     new OptimizeCSSAssetsPlugin(),
     new CleanWebpackPlugin(),
+    new SpeedMeasurePlugin(),
   ],
   cache: false,
   // devServer: {
