@@ -1,5 +1,5 @@
 import React, { useState, lazy, Suspense } from "react";
-import { Button } from 'antd';
+import { Button, Modal} from 'antd';
 import ToolTip from '../component/tooltip';
 
 // 懒加载的组件
